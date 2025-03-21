@@ -1,0 +1,6 @@
+{
+    "mainfest": [
+        { "alias": "background", "src": "textures/background.png" },
+        { "alias": "turtle", "src": "textures/turtle.jpg" }
+    ]
+}

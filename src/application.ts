@@ -1,4 +1,4 @@
-import { Application, Container, Renderer, Ticker} from "pixi.js";
+import { Container, Renderer, Ticker} from "pixi.js";
 import { appConfig } from "./config";
 import { Background } from "./components/background";
 
@@ -8,20 +8,14 @@ import { Background } from "./components/background";
  * The application is responsible for managing sub components and conducting high level logic flow
  */
 export class App {
-    private _bg: Background;
     private _renderer: Renderer;
     private _stage: Container;
 
+    private _bg: Background;
+
     constructor(){
         // create rendering context
-        this._renderer = new Renderer({
-            width: 800,
-            height: 600,
-            backgroundColor: 0x1099bb,
-            resolution: window.devicePixelRatio || 1,
-            autoDensity: true,
-        });
-        
+        this._renderer = new Renderer(appConfig.canvas);
         document.body.appendChild(this._renderer.view);
         this._stage = new Container();
         

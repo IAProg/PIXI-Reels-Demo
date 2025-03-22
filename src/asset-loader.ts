@@ -1,6 +1,4 @@
 import { Texture, Loader } from "pixi.js";
-import { ShapeDefinition } from "./types";
-
 
 export interface IAssetDefinition {
     name: string;
@@ -55,16 +53,3 @@ export function getTexture(textureName: string): Texture{
     }
     throw `could not find texture ${textureName}`
 }
-
-/**
- * request and return shape data
- */
-export async function loadShapeData(): Promise<Array<ShapeDefinition>> {
-    const response = await fetch(`data/shapeData.json`);
-    const data = await response.json(); 
-    if ( response.status !== 200 ){
-        throw data;
-    }
-    return data.Shapes;
-}
-

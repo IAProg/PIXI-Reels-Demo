@@ -1,34 +1,19 @@
 
-import { Container, Sprite, Text } from "pixi.js";
-import { ISizeRef, ShapeDefinition } from "./types";
+import { Container } from "pixi.js";
+import { ISizeRef } from "./types";
 import { appConfig } from "./config";
-import { SelectionList } from "./utils";
-import { getTexture } from "./asset-loader";
 
 /**
  * The main scene, presents the shape visualiser demo
  */
 export class MainScene extends Container {
     private size: ISizeRef;
-    private _title: Text;
-    private _bg: Sprite;
-    private _shapeStore: SelectionList<ShapeDefinition>;
 
-    constructor( shapeData: Array<ShapeDefinition> ){
+    constructor(){
         super();
-        this._shapeStore = new SelectionList( shapeData );
-
-        const { size, title } = appConfig.mainScene;
+        const { size } = appConfig.mainScene;
         this.size = size;
 
-        this._title = new Text( this._shapeStore.currentValue.name, title.style );
-        this._title.anchor.set(0.5, 0);
-        this._title.position.copyFrom(title.pos);
-
-        this._bg = new Sprite( getTexture("turtle") );
-        this._bg.anchor.set(0.5);
-
-        this.addChild( this._title, this._bg );
     }
 
     /**

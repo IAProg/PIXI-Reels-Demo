@@ -1,6 +1,9 @@
 import { Container, Renderer, Ticker} from "pixi.js";
 import { appConfig } from "./config";
 import { Background } from "./components/background";
+import { MainScene } from "./main-scene";
+import gsap from "gsap";
+
 
 
 /**
@@ -12,16 +15,24 @@ export class App {
     private _stage: Container;
 
     private _bg: Background;
+    private _mainScene: MainScene;
+
+    private _elapsed: number = 0;
 
     constructor(){
         // create rendering context
+        this._stage = new Container();
         this._renderer = new Renderer(appConfig.canvas);
         document.body.appendChild(this._renderer.view);
-        this._stage = new Container();
+
+        // enable pixi inspector
+        globalThis.__PIXI_STAGE__ = this._stage;
+        globalThis.__PIXI_RENDERER__ = this._renderer;
         
         // create elements
         this._bg = new Background();
-        this._stage.addChild(this._bg);
+        this._mainScene = new MainScene();
+        this._stage.addChild(this._bg, this._mainScene);
 
         // scale content to fit window
         this.scaleContent(window.innerWidth, window.innerHeight);
@@ -29,10 +40,14 @@ export class App {
             this.scaleContent(window.innerWidth, window.innerHeight)
         );   
 
+        gsap.ticker.remove(gsap.updateRoot);
+
         // start
         const ticker = new Ticker();
-        ticker.add(() => {
+        ticker.add((dt) => {
+            this._elapsed += dt / 100;
             this._renderer.render(this._stage);
+            gsap.updateRoot(this._elapsed);
         });
         ticker.start();
     }
@@ -43,9 +58,6 @@ export class App {
    private scaleContent(width: number, height: number): void{
         this._renderer.resize(width, height);
         this._bg.resize(width, height);
+        this._mainScene.resize(width, height);
     }
 }
-
-
-
-

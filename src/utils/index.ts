@@ -50,3 +50,11 @@ export function drawRoundedRectangle(width: number, height: number, radius: numb
     generateArcPoints(radius, height - radius, Math.PI / 2, Math.PI); // Bottom-left
     return transformPoints(points, zoom, rotation);
 }
+
+
+/**
+ * promise timeout wrapper function
+ */
+export const delay = (ms: number) => new Promise<void>(
+    (resolve) => setTimeout(resolve, ms)
+);

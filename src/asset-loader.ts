@@ -13,7 +13,13 @@ export interface IAssetDefinition {
  */
 const textureManifest = [
     { name: "background", url: "background.png"},
-    { name: "turtle", url: "turtle.jpg"}
+    { name: "turtle", url: "turtle.jpg"},
+    { name: "blank", url: "blank.png"},
+    { name: "cash", url: "cash.png"},
+    { name: "collector", url: "collector.png"},
+    { name: "reelsBacker", url: "reelsBacker.png"},
+    { name: "bigWin", url: "bigWin.jpg"},
+    { name: "bigWinFlash", url: "bigWinFlash.jpg"}
 ] as Array<IAssetDefinition>
 
 /**
@@ -47,6 +53,7 @@ export function loadAssets(): Promise<void>{
  * A wrapper method used to access textures on the loader, if the requested texture does not exist an error is thrown
  */
 export function getTexture(textureName: string): Texture{
+    console.log(textureCache)
     const texture = textureCache[textureName];
     if (texture){
         return texture;

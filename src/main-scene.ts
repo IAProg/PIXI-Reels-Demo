@@ -4,6 +4,7 @@ import { IBonusData, ISizeRef } from "./types";
 import { appConfig } from "./config";
 import { CascadeReel } from "./components/cascade/cascade";
 import { BigWin } from "./components/bigWin";
+import { delay } from "./utils";
 
 const DUMMY_BONUS = [
     {
@@ -48,10 +49,19 @@ export class MainScene extends Container {
         this._bigWin = new BigWin();
 
         this.addChild(this._cascadeReel, this._bigWin);
+
+        this.playBonus();
     }
 
-    public playBonus(bonusRound: Array<IBonusData> = DUMMY_BONUS): void {
+    public async playBonus(bonusRound: Array<IBonusData> = DUMMY_BONUS): Promise<void> {
 
+        delay(1000).then(async () => {
+            await this._cascadeReel.playCascade([1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
+            await delay(200);
+            await this._cascadeReel.playCascade([1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3]);
+            await delay(200);
+            await this._cascadeReel.playCascade([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]);
+        });
 
 
 

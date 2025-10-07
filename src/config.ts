@@ -16,13 +16,13 @@ export const appConfig = {
         backgroundColor: 0xffffff
     } as Partial<IApplicationOptions>,
     mainScene:{
-        size: { width: 1670, height: 966 } as ISizeRef,
+        size: { width: 1920, height: 1080 } as ISizeRef,
         cascadeConfig: {
             colCount: 5,
             rowCount: 3,
             symbolWidth: 275,
             symbolHeight: 275,
-            dropTime: 0.33, 
+            dropTime: 3.33, 
             dropStagger: 0.025,
             symbolMap:{
                 1: "blank",
@@ -32,6 +32,9 @@ export const appConfig = {
             posOut: { x: 0, y: +825}, 
             posIn: { x: 0 , y: -825}
         } as ICascadeConfig
+    },
+    controls: {
+        size: { width: 250, height: 1080 } as ISizeRef
     }
 } 
 

@@ -3,6 +3,7 @@ import { appConfig } from "./config";
 import { Background } from "./components/background";
 import { MainScene } from "./main-scene";
 import gsap from "gsap";
+import { Controls } from "./controls";
 
 
 
@@ -16,6 +17,7 @@ export class App {
 
     private _bg: Background;
     private _mainScene: MainScene;
+    private _controls: Controls;
 
     private _elapsed: number = 0;
 
@@ -34,7 +36,8 @@ export class App {
         // create elements
         this._bg = new Background();
         this._mainScene = new MainScene();
-        this._stage.addChild(this._bg, this._mainScene);
+        this._controls = new Controls( this.jumpElapsed.bind(this) );
+        this._stage.addChild(this._bg, this._mainScene, this._controls);
 
         // scale content to fit window
         this.scaleContent(window.innerWidth, window.innerHeight);
@@ -48,10 +51,14 @@ export class App {
         const ticker = new Ticker();
         ticker.add((dt) => {
             this._elapsed += dt / 100;
-            this._renderer.render(this._stage);
             gsap.updateRoot(this._elapsed);
+            this._renderer.render(this._stage);
         });
         ticker.start();
+    }
+
+    private jumpElapsed( ): void{
+        this._elapsed += 1;
     }
     
     /**
@@ -61,5 +68,6 @@ export class App {
         this._renderer.resize(width, height);
         this._bg.resize(width, height);
         this._mainScene.resize(width, height);
+        this._controls.resize(width, height);
     }
 }

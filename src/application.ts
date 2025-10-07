@@ -26,7 +26,9 @@ export class App {
         document.body.appendChild(this._renderer.view);
 
         // enable pixi inspector
+        // tslint:disable-next-line
         globalThis.__PIXI_STAGE__ = this._stage;
+        // tslint:disable-next-line
         globalThis.__PIXI_RENDERER__ = this._renderer;
         
         // create elements

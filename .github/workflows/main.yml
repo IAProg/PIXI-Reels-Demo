@@ -24,22 +24,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Enable Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
       - name: Check Nixpkgs inputs
         uses: DeterminateSystems/flake-checker-action@main
         with:
           fail-mode: true
+
       - name: Install dependencies
         run: npm install
+
       - name: Build
         run: nix develop -c npm run build
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: './dist'
+
       - name: Deploy to GitHub Pages
         id: deployment
+        uses: actions/deploy-pages@v4

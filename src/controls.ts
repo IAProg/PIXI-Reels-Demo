@@ -11,20 +11,32 @@ import { getTexture } from "./asset-loader";
 export class Controls extends Container {
     private size: ISizeRef;
 
-    private _button: Sprite;
 
-    constructor( onClick: () => void ) {
+
+    constructor( onClick: (foo: number) => void ) {
         super();
         const { size } = appConfig.mainScene;
         this.size = size;
 
 
-        this._button = new Sprite( getTexture("button") );
-        this._button.anchor.set( 1, 0.5 );
-        this._button.on( "pointerdown", onClick );
-        this._button.interactive = this._button.buttonMode = true;
+        const btnA = new Sprite( getTexture("button") );
+        btnA.anchor.set( 1, 0.5 );
+        btnA.on( "pointerdown", () => onClick(0.5) );
+        btnA.interactive = btnA.buttonMode = true;
+        btnA.y = -265;
 
-        this.addChild(this._button);
+        const btnB = new Sprite( getTexture("button") );
+        btnB.anchor.set( 1, 0.5 );
+        btnB.on( "pointerdown", () => onClick(1) );
+        btnB.interactive = btnB.buttonMode = true;
+
+        const btnC = new Sprite( getTexture("button") );
+        btnC.anchor.set( 1, 0.5 );
+        btnC.on( "pointerdown", () => onClick(5) );
+        btnC.interactive = btnC.buttonMode = true;
+        btnC.y = +265;
+
+        this.addChild(btnA, btnB, btnC);
 
     }
 

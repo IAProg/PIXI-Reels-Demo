@@ -57,8 +57,8 @@ export class App {
         ticker.start();
     }
 
-    private jumpElapsed( ): void{
-        this._elapsed += 1;
+    private jumpElapsed( secondsToSkip: number ): void{
+        this._elapsed += secondsToSkip;
     }
     
     /**

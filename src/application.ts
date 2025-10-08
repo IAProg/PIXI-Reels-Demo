@@ -36,7 +36,7 @@ export class App {
         // create elements
         this._bg = new Background();
         this._mainScene = new MainScene();
-        this._controls = new Controls( this.jumpElapsed.bind(this) );
+        this._controls = new Controls( this.jumpElapsed.bind(this), this.play.bind(this) );
         this._stage.addChild(this._bg, this._mainScene, this._controls);
 
         // scale content to fit window
@@ -60,6 +60,10 @@ export class App {
 
     private jumpElapsed( secondsToSkip: number ): void{
         this._elapsed += secondsToSkip;
+    }
+
+    private play(): void{
+        this._mainScene.playBonus();
     }
     
     /**

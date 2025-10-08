@@ -29,7 +29,7 @@ export class MainScene extends Container {
         const { size, cascadeConfig } = appConfig.mainScene;
         this.size = size;
 
-        this._roundCounter = new Text("placeholder", { fontSize: 75, align: "center" });
+        this._roundCounter = new Text("Idle: Press Play To Start", { fontSize: 75, align: "center" });
         this._roundCounter.anchor.set(0.5,0);
         this._roundCounter.y = 400;
 
@@ -39,8 +39,6 @@ export class MainScene extends Container {
         this.addChild(this._cascadeReel, this._bigWin, this._roundCounter );
 
         this._tl = gsap.timeline();
-
-        this.playBonus();
     }
 
     public async playBonus(bonusRound: Array<IBonusData> = DUMMY_BONUS): Promise<void> {
@@ -48,7 +46,6 @@ export class MainScene extends Container {
 
         return new Promise((resolve) => {
             this._tl = gsap.timeline({ onComplete: resolve });
-
             let triggerTime = 0;
 
             bonusRound.forEach( ( roundData, roundIndex ) => {
@@ -58,13 +55,7 @@ export class MainScene extends Container {
                 if ( roundData.showBigWin ){
                     triggerTime = this._bigWin.addBigWin( this._tl, triggerTime );
                 }
-            });
-
-            
-
-
-
-            
+            });            
         });
     }
 

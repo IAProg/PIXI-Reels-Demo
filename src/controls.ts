@@ -11,20 +11,24 @@ import { LabelButton } from "./components/labelButton";
 export class Controls extends Container {
     private size: ISizeRef;
     
-    constructor( callback: (foo: number) => void ) {
+    constructor( skip: (foo: number) => void, play: Function ) {
         super();
         const { size } = appConfig.mainScene;
         this.size = size;
 
-        const btnA = new LabelButton( "+ 0.1 s", () => callback(0.1) );
-        btnA.y = -265;
+        const btnA = new LabelButton( "+ 0.1 s", () => skip(0.1) );
+        btnA.y = -320;
 
-        const btnB = new LabelButton( "+ 1.0 s", () => callback(1.0) );
+        const btnB = new LabelButton( "+ 1.0 s", () => skip(1.0) );
+        btnB.y = -120;
 
-        const btnC = new LabelButton( "+ 3.0 s", () => callback(3.0) );
-        btnC.y = +265;
+        const btnC = new LabelButton( "+ 3.0 s", () => skip(3.0) );
+        btnC.y = +80;
 
-        this.addChild(btnA, btnB, btnC);
+        const btnD = new LabelButton( "PLAY", () => play() );
+        btnD.y = +280;
+
+        this.addChild(btnA, btnB, btnC, btnD);
 
     }
 

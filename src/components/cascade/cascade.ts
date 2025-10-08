@@ -62,21 +62,8 @@ export class CascadeReel extends Container {
             let triggerTime = 0;
 
             triggerTime += this._addCascade( this._tl, this._symbols, "out", triggerTime );
-
-            // set skin
-            for (let i = this._symbols.length - 1; i >= 0; i--) {
-                const targetSymbol = this._symbols[i];
-                const symbolID = landing[i];
-                const symbolSkin = this._config.symbolMap[symbolID];
-                this._tl.add(() => { targetSymbol.texture = getTexture(symbolSkin); }, triggerTime);
-            }
-
+            triggerTime += this._addSkinChange( this._tl, this._symbols, landing, triggerTime );
             triggerTime += this._addCascade( this._tl, this._symbols, "in", triggerTime );
-
-
-
-
-
         });
     }
 
@@ -101,5 +88,15 @@ export class CascadeReel extends Container {
 
 
         return triggerTime;
+    }
+
+    private  _addSkinChange(tl: gsap.core.Timeline, symbols: Array<CascadeSymbol>, landing: Array<number>, triggerTime: number ): number {
+        for (let i = symbols.length - 1; i >= 0; i--) {
+            const targetSymbol = this._symbols[i];
+            const symbolID = landing[i];
+            const symbolSkin = this._config.symbolMap[symbolID];
+            tl.add(() => { targetSymbol.texture = getTexture(symbolSkin); }, triggerTime);
+        }
+        return triggerTime;        
     }
 }

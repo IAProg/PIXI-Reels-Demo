@@ -48,21 +48,11 @@ export class CascadeReel extends Container {
     }
 
     public addCascade(tl: gsap.core.Timeline, landing: Array<number>, triggerTime: number ): number {
-
-        const A = triggerTime;
-
-        console.log("tt start", triggerTime)
-
         triggerTime = this._addCascade( tl, this._symbols, "out", triggerTime );
         triggerTime = this._addSkinChange( tl, this._symbols, landing, triggerTime );
         triggerTime = this._addCascade( tl, this._symbols, "in", triggerTime );
 
         const B = triggerTime;
-
-        console.log("tt end", triggerTime)
-
-        console.log("cascade added seconds -> ", B -A )
-
         return triggerTime;
     }
 

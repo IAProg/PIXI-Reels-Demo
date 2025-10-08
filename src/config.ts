@@ -35,7 +35,11 @@ export const appConfig = {
     },
     controls: {
         size: { width: 250, height: 1080 } as ISizeRef
+    },
+    bigWin: {
+        textureFlashOn: "bigWin",
+        textureFlashOff: "bigWinFlash",
+        flashDuration: 0.2,
+        flashCount: 5
     }
 } 
-
-

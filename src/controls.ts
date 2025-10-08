@@ -1,8 +1,8 @@
 
-import { Container, Sprite } from "pixi.js";
+import { Container } from "pixi.js";
 import {  ISizeRef } from "./types";
 import { appConfig } from "./config";
-import { getTexture } from "./asset-loader";
+import { LabelButton } from "./components/labelButton";
 
 
 /**
@@ -11,27 +11,17 @@ import { getTexture } from "./asset-loader";
 export class Controls extends Container {
     private size: ISizeRef;
     
-    constructor( onClick: (foo: number) => void ) {
+    constructor( callback: (foo: number) => void ) {
         super();
         const { size } = appConfig.mainScene;
         this.size = size;
 
-
-        const btnA = new Sprite( getTexture("button") );
-        btnA.anchor.set( 1, 0.5 );
-        btnA.on( "pointerdown", () => onClick(0.1) );
-        btnA.interactive = btnA.buttonMode = true;
+        const btnA = new LabelButton( "+ 0.1 s", () => callback(0.1) );
         btnA.y = -265;
 
-        const btnB = new Sprite( getTexture("button") );
-        btnB.anchor.set( 1, 0.5 );
-        btnB.on( "pointerdown", () => onClick(1) );
-        btnB.interactive = btnB.buttonMode = true;
+        const btnB = new LabelButton( "+ 1.0 s", () => callback(1.0) );
 
-        const btnC = new Sprite( getTexture("button") );
-        btnC.anchor.set( 1, 0.5 );
-        btnC.on( "pointerdown", () => onClick(5) );
-        btnC.interactive = btnC.buttonMode = true;
+        const btnC = new LabelButton( "+ 3.0 s", () => callback(3.0) );
         btnC.y = +265;
 
         this.addChild(btnA, btnB, btnC);
@@ -49,7 +39,6 @@ export class Controls extends Container {
             width / this.size.width,
             height / this.size.height
         ));
-
 
         this.position.set(
             width,

@@ -45,16 +45,12 @@ export class MainScene extends Container {
 
             for ( const round of bonusRound ) {
                 triggerTime = this._cascadeReel.addCascade( this._tl, round.landing, triggerTime );
-
                 if ( round.showBigWin ){
-                    // 
+                    triggerTime = this._bigWin.addBigWin( this._tl, triggerTime );
                 }
-              //  console.log(triggerTime)
 
             }
-
         });
-
     }
 
     /**

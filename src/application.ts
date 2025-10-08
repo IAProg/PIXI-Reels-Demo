@@ -1,4 +1,4 @@
-import { Container, Renderer, Ticker} from "pixi.js";
+import { Container, Renderer, Text, Ticker} from "pixi.js";
 import { appConfig } from "./config";
 import { Background } from "./components/background";
 import { MainScene } from "./main-scene";

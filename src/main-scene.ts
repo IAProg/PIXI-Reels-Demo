@@ -54,7 +54,6 @@ export class MainScene extends Container {
     }
 
     public async playBonus(bonusRound: Array<IBonusData> = DUMMY_BONUS): Promise<void> {
-
         delay(1000).then(async () => {
             await this._cascadeReel.playCascade([1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
             await delay(200);
@@ -62,10 +61,6 @@ export class MainScene extends Container {
             await delay(200);
             await this._cascadeReel.playCascade([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]);
         });
-
-
-
-
     }
 
     /**

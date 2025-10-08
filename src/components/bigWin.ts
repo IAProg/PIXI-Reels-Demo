@@ -6,6 +6,8 @@ export class BigWin extends Sprite {
     constructor() {
         super( getTexture("bigWin") );
         this.anchor.set(0.5);
+
+        this.visible = false;
     }
 
 }

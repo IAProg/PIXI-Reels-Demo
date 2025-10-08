@@ -10,9 +10,7 @@ import { getTexture } from "./asset-loader";
  */
 export class Controls extends Container {
     private size: ISizeRef;
-
-
-
+    
     constructor( onClick: (foo: number) => void ) {
         super();
         const { size } = appConfig.mainScene;

@@ -52,7 +52,7 @@ export class MainScene extends Container {
             let triggerTime = 0;
 
             bonusRound.forEach( ( roundData, roundIndex ) => {
-                this._tl.add(() => { this._roundCounter.text = `round ${roundIndex} of ${bonusRound.length}` }, triggerTime);
+                this._tl.add(() => { this._roundCounter.text = `round ${roundIndex+1} of ${bonusRound.length}` }, triggerTime);
 
                 triggerTime = this._cascadeReel.addCascade( this._tl, roundData.landing, triggerTime );
                 if ( roundData.showBigWin ){

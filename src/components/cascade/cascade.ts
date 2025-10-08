@@ -51,8 +51,7 @@ export class CascadeReel extends Container {
         triggerTime = this._addCascade( tl, this._symbols, "out", triggerTime );
         triggerTime = this._addSkinChange( tl, this._symbols, landing, triggerTime );
         triggerTime = this._addCascade( tl, this._symbols, "in", triggerTime );
-
-        const B = triggerTime;
+        
         return triggerTime;
     }
 

@@ -45,6 +45,7 @@ export class App {
             this.scaleContent(window.innerWidth, window.innerHeight)
         );   
 
+        // we need to update gsap manually 
         gsap.ticker.remove(gsap.updateRoot);
 
         // start

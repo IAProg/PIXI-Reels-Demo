@@ -55,23 +55,13 @@ export class CascadeReel extends Container {
     async playCascade(landing: Array<number>): Promise<void> {
         this._tl?.kill();
 
-        const { dropTime, dropStagger } = this._config;
-
         return new Promise((resolve) => {
             this._tl = gsap.timeline({ onComplete: resolve });
 
 
             let triggerTime = 0;
 
-            // out
-            for (let i = this._symbols.length - 1; i >= 0; i--) {
-                const targetSymbol = this._symbols[i];
-                const yStart = targetSymbol.homePos.y;
-                const yEnd = targetSymbol.homePos.y + this._config.posOut.y;
-                this._tl.fromTo(targetSymbol, { y: yStart }, { y: yEnd, ease: "power2.in", duration: dropTime }, triggerTime);
-                triggerTime += dropStagger;
-            }
-            triggerTime += dropTime;
+            triggerTime += this._addCascade( this._tl, this._symbols, "out", triggerTime );
 
             // set skin
             for (let i = this._symbols.length - 1; i >= 0; i--) {
@@ -81,21 +71,35 @@ export class CascadeReel extends Container {
                 this._tl.add(() => { targetSymbol.texture = getTexture(symbolSkin); }, triggerTime);
             }
 
-            // in
-            for (let i = this._symbols.length - 1; i >= 0; i--) {
-                const targetSymbol = this._symbols[i];
-                const yStart = targetSymbol.homePos.y + this._config.posIn.y;
-                const yEnd = targetSymbol.homePos.y;
-
-                this._tl.fromTo(targetSymbol, { y: yStart }, { y: yEnd, ease: "power2.out", duration: dropTime, immediateRender: false }, triggerTime)
-                triggerTime += dropStagger;
-            }
-            triggerTime += dropTime;
+            triggerTime += this._addCascade( this._tl, this._symbols, "in", triggerTime );
 
 
 
 
 
         });
+    }
+
+    private _addCascade(tl: gsap.core.Timeline, symbols: Array<CascadeSymbol>, mode: "in" | "out", triggerTime: number ): number {
+        const { dropTime, dropStagger, yOut, yIn } = this._config;
+
+        for (let i = symbols.length - 1; i >= 0; i--) {
+            const targetSymbol = symbols[i];
+
+            const homeY = targetSymbol.homePos.y;
+            const outY = mode === "out" ? (homeY + yOut) : (homeY + yIn);
+
+            const start = mode === "out" ? homeY: outY;
+            const end = mode === "out" ? outY: homeY;
+            const ease = mode === "out" ? "power2.in" : "power2.out";
+
+
+            tl.fromTo(targetSymbol, { y: start }, { y: end, ease, duration: dropTime, immediateRender: false }, triggerTime);
+            triggerTime += dropStagger;
+        }
+        triggerTime += dropTime;
+
+
+        return triggerTime;
     }
 }

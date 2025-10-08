@@ -29,8 +29,8 @@ export const appConfig = {
                 2: "cash",
                 3: "collector"
             },
-            posOut: { x: 0, y: +825}, 
-            posIn: { x: 0 , y: -825}
+            yOut: +825, 
+            yIn: -825
         } as ICascadeConfig
     },
     controls: {

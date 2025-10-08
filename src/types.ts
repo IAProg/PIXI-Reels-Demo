@@ -25,8 +25,8 @@ export interface ICascadeConfig {
     dropTime: number;
     dropStagger: number;
     symbolMap: { [key: number]: string },
-    posOut: IPointLike;
-    posIn: IPointLike;
+    yOut: number;
+    yIn: number;
 }
 
 

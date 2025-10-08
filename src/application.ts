@@ -4,6 +4,7 @@ import { Background } from "./components/background";
 import { MainScene } from "./main-scene";
 import gsap from "gsap";
 import { Controls } from "./controls";
+import { getDummyBonus } from "./dummyBonus";
 
 
 
@@ -61,7 +62,7 @@ export class App {
     }
 
     private play(): void{
-        this._mainScene.playBonus();
+        this._mainScene.playBonus( getDummyBonus() );
     }
     
     /**

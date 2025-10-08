@@ -41,7 +41,7 @@ export class MainScene extends Container {
         this._tl = gsap.timeline();
     }
 
-    public async playBonus(bonusRound: Array<IBonusData> = DUMMY_BONUS): Promise<void> {
+    public async playBonus(bonusRound: Array<IBonusData>): Promise<void> {
         this._tl?.kill();
 
         return new Promise((resolve) => {
@@ -52,7 +52,7 @@ export class MainScene extends Container {
                 this._tl.add(() => { this._roundCounter.text = `round ${roundIndex+1} of ${bonusRound.length}` }, triggerTime);
 
                 triggerTime = this._cascadeReel.addCascade( this._tl, roundData.landing, triggerTime );
-                
+
                 if ( roundData.showBigWin ){
                     triggerTime = this._bigWin.addBigWin( this._tl, triggerTime );
                 }

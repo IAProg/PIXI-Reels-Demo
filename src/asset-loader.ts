@@ -54,7 +54,6 @@ export function loadAssets(): Promise<void>{
  * A wrapper method used to access textures on the loader, if the requested texture does not exist an error is thrown
  */
 export function getTexture(textureName: string): Texture{
-    console.log(textureCache)
     const texture = textureCache[textureName];
     if (texture){
         return texture;

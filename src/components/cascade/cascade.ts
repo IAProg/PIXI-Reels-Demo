@@ -2,13 +2,10 @@ import { Container, Graphics, Point, Sprite } from "pixi.js";
 import { ICascadeConfig } from "../../types";
 import { CascadeSymbol } from "./symbol";
 import { getTexture } from "../../asset-loader";
-import gsap from "gsap";
-import { delay } from "../../utils";
 
 export class CascadeReel extends Container {
     private _symbols: Array<CascadeSymbol>;
     private _backer: Sprite;
-    private _tl: gsap.core.Timeline;
     private _config: ICascadeConfig;
 
     constructor(config: ICascadeConfig) {
@@ -17,8 +14,6 @@ export class CascadeReel extends Container {
         const { colCount, rowCount, symbolWidth, symbolHeight } = this._config;
 
         this._symbols = [];
-
-        this._tl = gsap.timeline();
 
         this._backer = new Sprite(getTexture("reelsBacker"));
         this._backer.anchor.set(0.5);
@@ -52,19 +47,23 @@ export class CascadeReel extends Container {
         this.addChild(this._backer, symbolContainer);
     }
 
-    async playCascade(landing: Array<number>): Promise<void> {
-        this._tl?.kill();
+    public addCascade(tl: gsap.core.Timeline, landing: Array<number>, triggerTime: number ): number {
 
-        return new Promise((resolve) => {
-            this._tl = gsap.timeline({ onComplete: resolve });
+        const A = triggerTime;
 
+        console.log("tt start", triggerTime)
 
-            let triggerTime = 0;
+        triggerTime = this._addCascade( tl, this._symbols, "out", triggerTime );
+        triggerTime = this._addSkinChange( tl, this._symbols, landing, triggerTime );
+        triggerTime = this._addCascade( tl, this._symbols, "in", triggerTime );
 
-            triggerTime += this._addCascade( this._tl, this._symbols, "out", triggerTime );
-            triggerTime += this._addSkinChange( this._tl, this._symbols, landing, triggerTime );
-            triggerTime += this._addCascade( this._tl, this._symbols, "in", triggerTime );
-        });
+        const B = triggerTime;
+
+        console.log("tt end", triggerTime)
+
+        console.log("cascade added seconds -> ", B -A )
+
+        return triggerTime;
     }
 
     private _addCascade(tl: gsap.core.Timeline, symbols: Array<CascadeSymbol>, mode: "in" | "out", triggerTime: number ): number {
@@ -80,12 +79,10 @@ export class CascadeReel extends Container {
             const end = mode === "out" ? outY: homeY;
             const ease = mode === "out" ? "power2.in" : "power2.out";
 
-
             tl.fromTo(targetSymbol, { y: start }, { y: end, ease, duration: dropTime, immediateRender: false }, triggerTime);
             triggerTime += dropStagger;
         }
         triggerTime += dropTime;
-
 
         return triggerTime;
     }

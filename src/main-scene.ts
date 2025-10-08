@@ -4,32 +4,10 @@ import { IBonusData, ISizeRef } from "./types";
 import { appConfig } from "./config";
 import { CascadeReel } from "./components/cascade/cascade";
 import { BigWin } from "./components/bigWin";
-import { delay } from "./utils";
+import gsap from "gsap";
+import { DUMMY_BONUS } from "./dummyBonus";
 
-const DUMMY_BONUS = [
-    {
-        win: 0,
-        remainingSpins: 0,
-        showBigWin: false,
-        showAnticipation: false,
-        landing: [1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    },
-    {
-        win: 0,
-        remainingSpins: 0,
-        showBigWin: false,
-        showAnticipation: false,
-        landing: [1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3]
-    },
-    {
-        win: 0,
-        remainingSpins: 0,
-        showBigWin: false,
-        showAnticipation: false,
-        landing: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-    },
 
-] as Array<IBonusData>
 
 /**
  * The main scene, presents the feature demo
@@ -39,6 +17,8 @@ export class MainScene extends Container {
 
     private _cascadeReel: CascadeReel;
     private _bigWin: BigWin;
+
+    private _tl: gsap.core.Timeline;
 
     constructor() {
         super();
@@ -50,17 +30,31 @@ export class MainScene extends Container {
 
         this.addChild(this._cascadeReel, this._bigWin);
 
+        this._tl = gsap.timeline();
+
         this.playBonus();
     }
 
     public async playBonus(bonusRound: Array<IBonusData> = DUMMY_BONUS): Promise<void> {
-        delay(1000).then(async () => {
-            await this._cascadeReel.playCascade([1, 2, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
-            await delay(200);
-            await this._cascadeReel.playCascade([1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3]);
-            await delay(200);
-            await this._cascadeReel.playCascade([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]);
+        this._tl?.kill();
+
+        return new Promise((resolve) => {
+            this._tl = gsap.timeline({ onComplete: resolve });
+
+            let triggerTime = 0;
+
+            for ( const round of bonusRound ) {
+                triggerTime = this._cascadeReel.addCascade( this._tl, round.landing, triggerTime );
+
+                if ( round.showBigWin ){
+                    // 
+                }
+              //  console.log(triggerTime)
+
+            }
+
         });
+
     }
 
     /**

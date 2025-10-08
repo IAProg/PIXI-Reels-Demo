@@ -22,7 +22,7 @@ export const appConfig = {
             rowCount: 3,
             symbolWidth: 275,
             symbolHeight: 275,
-            dropTime: 3.33, 
+            dropTime: 0.33, 
             dropStagger: 0.025,
             symbolMap:{
                 1: "blank",

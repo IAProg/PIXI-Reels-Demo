@@ -19,7 +19,7 @@ export class Controls extends Container {
 
         const btnA = new Sprite( getTexture("button") );
         btnA.anchor.set( 1, 0.5 );
-        btnA.on( "pointerdown", () => onClick(0.5) );
+        btnA.on( "pointerdown", () => onClick(0.1) );
         btnA.interactive = btnA.buttonMode = true;
         btnA.y = -265;
 

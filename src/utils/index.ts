@@ -58,3 +58,14 @@ export function drawRoundedRectangle(width: number, height: number, radius: numb
 export const delay = (ms: number) => new Promise<void>(
     (resolve) => setTimeout(resolve, ms)
 );
+
+/**
+ * create array of numbers with range and count
+ */
+export function createRepeatingRange(count, min, max) {
+  const result = [];
+  for (let i = 0; i < count; i++) {
+    result.push(Math.floor(Math.random() * (max - min + 1)) + min);
+  }
+  return result;
+}

@@ -42,7 +42,7 @@ export class MainScene extends Container {
     }
 
     public async playBonus(bonusRound: Array<IBonusData>): Promise<void> {
-        this._tl?.kill();
+        this._tl.progress(1);
 
         return new Promise((resolve) => {
             this._tl = gsap.timeline({ onComplete: resolve });

@@ -1,5 +1,5 @@
 
-import { Container } from "pixi.js";
+import { Container, Text } from "pixi.js";
 import { IBonusData, ISizeRef } from "./types";
 import { appConfig } from "./config";
 import { CascadeReel } from "./components/cascade/cascade";
@@ -17,18 +17,26 @@ export class MainScene extends Container {
 
     private _cascadeReel: CascadeReel;
     private _bigWin: BigWin;
+    private _roundCounter: Text;
+
 
     private _tl: gsap.core.Timeline;
+
+
 
     constructor() {
         super();
         const { size, cascadeConfig } = appConfig.mainScene;
         this.size = size;
 
+        this._roundCounter = new Text("placeholder", { fontSize: 75, align: "center" });
+        this._roundCounter.anchor.set(0.5,0);
+        this._roundCounter.y = 400;
+
         this._cascadeReel = new CascadeReel(cascadeConfig);
         this._bigWin = new BigWin();
 
-        this.addChild(this._cascadeReel, this._bigWin);
+        this.addChild(this._cascadeReel, this._bigWin, this._roundCounter );
 
         this._tl = gsap.timeline();
 
@@ -43,13 +51,20 @@ export class MainScene extends Container {
 
             let triggerTime = 0;
 
-            for ( const round of bonusRound ) {
-                triggerTime = this._cascadeReel.addCascade( this._tl, round.landing, triggerTime );
-                if ( round.showBigWin ){
+            bonusRound.forEach( ( roundData, roundIndex ) => {
+                this._tl.add(() => { this._roundCounter.text = `round ${roundIndex} of ${bonusRound.length}` }, triggerTime);
+
+                triggerTime = this._cascadeReel.addCascade( this._tl, roundData.landing, triggerTime );
+                if ( roundData.showBigWin ){
                     triggerTime = this._bigWin.addBigWin( this._tl, triggerTime );
                 }
+            });
 
-            }
+            
+
+
+
+            
         });
     }
 

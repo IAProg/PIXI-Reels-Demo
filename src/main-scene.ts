@@ -5,7 +5,6 @@ import { appConfig } from "./config";
 import { CascadeReel } from "./components/cascade/cascade";
 import { BigWin } from "./components/bigWin";
 import gsap from "gsap";
-import { DUMMY_BONUS } from "./dummyBonus";
 import { ProgressBar } from "./components/progressBar";
 import { RoundCounter } from "./components/roundCounter";
 import { Anticipation } from "./components/anticipation";

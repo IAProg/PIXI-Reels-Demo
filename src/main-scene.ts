@@ -7,6 +7,7 @@ import { BigWin } from "./components/bigWin";
 import gsap from "gsap";
 import { DUMMY_BONUS } from "./dummyBonus";
 import { ProgressBar } from "./components/progressBar";
+import { RoundCounter } from "./components/roundCounter";
 
 
 
@@ -19,24 +20,20 @@ export class MainScene extends Container {
     private _progressBar: ProgressBar;
     private _cascadeReel: CascadeReel;
     private _bigWin: BigWin;
-    private _roundCounter: Text;
-
+    private _roundCounter: RoundCounter;
 
     private _tl: gsap.core.Timeline;
 
-
-
     constructor() {
         super();
-        const { size, cascadeConfig, progressBarConfig } = appConfig.mainScene;
+        const { size, cascadeConfig, progressBarConfig, roundCounterConfig } = appConfig.mainScene;
         this.size = size;
-
-        this._roundCounter = new Text("Idle: Press Play To Start", { fontSize: 75, align: "center" });
-        this._roundCounter.anchor.set(0.5,0);
-        this._roundCounter.y = 400;
 
         this._cascadeReel = new CascadeReel(cascadeConfig);
         this._bigWin = new BigWin();
+
+        this._roundCounter = new RoundCounter( roundCounterConfig );
+        this._roundCounter.y = 475;
 
         this._progressBar = new ProgressBar( progressBarConfig );
         this._progressBar.y = -475
@@ -51,17 +48,23 @@ export class MainScene extends Container {
 
         return new Promise((resolve) => {
             this._tl = gsap.timeline({ onComplete: resolve });
-            let triggerTime = 0;
 
-            bonusRound.forEach( ( roundData, roundIndex ) => {
-                this._tl.add(() => { this._roundCounter.text = `round ${roundIndex+1} of ${bonusRound.length}` }, triggerTime);
+            const totalRounds = bonusRound.length;
+            let triggerTime = 0;
+            let roundIndex = 0;
+
+            for ( const roundData of bonusRound ){
+                triggerTime = this._roundCounter.addUpdateLabel( this._tl, roundIndex, totalRounds, triggerTime );
                 triggerTime = this._cascadeReel.addCascade( this._tl, roundData.landing, triggerTime );
+
                 if ( roundData.showBigWin ){
                     triggerTime = this._bigWin.addBigWin( this._tl, triggerTime );
                 }
-            });      
+                roundIndex++;
+            }
 
             triggerTime = this._progressBar.addProgressBar( this._tl, triggerTime );
+            triggerTime = this._roundCounter.addResetLabel( this._tl, triggerTime );
         });
     }
 

@@ -1,3 +1,5 @@
+import { TextStyle } from "pixi.js";
+
 export interface IAssetDefinition {
     alias: string;
     src: string;
@@ -43,4 +45,11 @@ export interface IProgressBarConfig {
     height: number;
     bgColour: number
     barColour: number
+}
+
+export interface IRoundCounterConfig {
+    width: number;
+    height: number;
+    fontStyle: TextStyle
+    bgColour: number
 }

@@ -1,5 +1,5 @@
 import { IApplicationOptions, ITextStyle } from "pixi.js";
-import { ICascadeConfig, IProgressBarConfig, ISizeRef } from "./types";
+import { ICascadeConfig, IProgressBarConfig, IRoundCounterConfig, ISizeRef } from "./types";
 
 
 /**
@@ -37,7 +37,13 @@ export const appConfig = {
             height: 100,
             bgColour: 0xcccccc,
             barColour: 0x33cc33
-        } as IProgressBarConfig
+        } as IProgressBarConfig,
+        roundCounterConfig: {
+            width: 1280,
+            height: 100,
+            fontStyle: { fontSize: 75, align: "center" },
+            bgColour: 0xcccccc
+        } as IRoundCounterConfig
     },
     controls: {
         size: { width: 250, height: 1080 } as ISizeRef

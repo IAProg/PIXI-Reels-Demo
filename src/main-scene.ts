@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { DUMMY_BONUS } from "./dummyBonus";
 import { ProgressBar } from "./components/progressBar";
 import { RoundCounter } from "./components/roundCounter";
+import { Anticipation } from "./components/anticipation";
 
 
 
@@ -20,6 +21,7 @@ export class MainScene extends Container {
     private _progressBar: ProgressBar;
     private _cascadeReel: CascadeReel;
     private _bigWin: BigWin;
+    private _anticipation: Anticipation;
     private _roundCounter: RoundCounter;
 
     private _tl: gsap.core.Timeline;
@@ -29,8 +31,10 @@ export class MainScene extends Container {
         const { size, cascadeConfig, progressBarConfig, roundCounterConfig } = appConfig.mainScene;
         this.size = size;
 
-        this._cascadeReel = new CascadeReel(cascadeConfig);
         this._bigWin = new BigWin();
+        this._anticipation = new Anticipation();
+        this._anticipation.x = 550;
+        this._cascadeReel = new CascadeReel(cascadeConfig, this._anticipation);
 
         this._roundCounter = new RoundCounter( roundCounterConfig );
         this._roundCounter.y = 475;
@@ -38,7 +42,7 @@ export class MainScene extends Container {
         this._progressBar = new ProgressBar( progressBarConfig );
         this._progressBar.y = -475
 
-        this.addChild(this._cascadeReel, this._bigWin, this._progressBar, this._roundCounter );
+        this.addChild(this._cascadeReel, this._bigWin, this._anticipation, this._progressBar, this._roundCounter );
 
         this._tl = gsap.timeline();
     }
@@ -55,7 +59,7 @@ export class MainScene extends Container {
 
             for ( const roundData of bonusRound ){
                 triggerTime = this._roundCounter.addUpdateLabel( this._tl, roundIndex, totalRounds, triggerTime );
-                triggerTime = this._cascadeReel.addCascade( this._tl, roundData.landing, triggerTime );
+                triggerTime = this._cascadeReel.addCascade( this._tl, roundData.landing, triggerTime, roundData.showAnticipation );
 
                 if ( roundData.showBigWin ){
                     triggerTime = this._bigWin.addBigWin( this._tl, triggerTime );

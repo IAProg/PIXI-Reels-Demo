@@ -1,4 +1,4 @@
-import { Point, Sprite } from "pixi.js";
+import { Point, Sprite, Text } from "pixi.js";
 import { getTexture } from "../../asset-loader";
 
 export class CascadeSymbol extends Sprite {   
@@ -9,10 +9,14 @@ export class CascadeSymbol extends Sprite {
         super();
         this._symbolIndex = symbolIndex;
         this._homePos = homePos;
+
+        const l = new Text(symbolIndex)
         
         this.anchor.set(0.5);
         this.setTexture( textureName )
         this.position.copyFrom(homePos);
+
+        this.addChild(l)
     }
 
     get homePos(): Point {

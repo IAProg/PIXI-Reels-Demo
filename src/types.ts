@@ -29,6 +29,8 @@ export interface ICascadeConfig {
     symbolMap: { [key: number]: string },
     yOut: number;
     yIn: number;
+    cascadeGroups: number[][];
+    anticipationTriggerIndex: number
 }
 
 

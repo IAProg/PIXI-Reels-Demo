@@ -2,16 +2,19 @@ import { Container, Graphics, Point, Sprite } from "pixi.js";
 import { ICascadeConfig } from "../../types";
 import { CascadeSymbol } from "./symbol";
 import { getTexture } from "../../asset-loader";
+import { Anticipation } from "../anticipation";
 
 export class CascadeReel extends Container {
+    private _anticipation: Anticipation;
     private _symbols: Array<CascadeSymbol>;
     private _backer: Sprite;
     private _config: ICascadeConfig;
 
-    constructor(config: ICascadeConfig) {
+    constructor(config: ICascadeConfig, anticipation: Anticipation) {
         super();
         this._config = config;
         const { colCount, rowCount, symbolWidth, symbolHeight } = this._config;
+        this._anticipation = anticipation;
 
         this._symbols = [];
 
@@ -47,42 +50,59 @@ export class CascadeReel extends Container {
         this.addChild(this._backer, symbolContainer);
     }
 
-    public addCascade(tl: gsap.core.Timeline, landing: Array<number>, triggerTime: number ): number {
-        triggerTime = this._addCascade( tl, this._symbols, "out", triggerTime );
-        triggerTime = this._addSkinChange( tl, this._symbols, landing, triggerTime );
-        triggerTime = this._addCascade( tl, this._symbols, "in", triggerTime );
-        
+    public addCascade(tl: gsap.core.Timeline, landing: Array<number>, triggerTime: number, showAnticipation: boolean): number {
+        triggerTime = this._addCascade(tl, this._symbols, "out", triggerTime);
+        triggerTime = this._addSkinChange(tl, this._symbols, landing, triggerTime);
+        triggerTime = this._addCascade(tl, this._symbols, "in", triggerTime, showAnticipation);
+
         return triggerTime;
     }
 
-    private _addCascade(tl: gsap.core.Timeline, symbols: Array<CascadeSymbol>, mode: "in" | "out", triggerTime: number ): number {
-        const { dropTime, dropStagger, yOut, yIn } = this._config;
+    private _addCascade(tl: gsap.core.Timeline, symbols: Array<CascadeSymbol>, mode: "in" | "out", triggerTime: number, showAnticipation: boolean = false): number {
+        const { dropTime, dropStagger, yOut, yIn, cascadeGroups, anticipationTriggerIndex } = this._config;
 
-        for (let i = symbols.length - 1; i >= 0; i--) {
-            const targetSymbol = symbols[i];
+        let groupIndex = 0;
+        for (const cascadeGroup of cascadeGroups) {
 
-            const homeY = targetSymbol.homePos.y;
-            const outY = mode === "out" ? (homeY + yOut) : (homeY + yIn);
+            if ( groupIndex === anticipationTriggerIndex && showAnticipation ) {
+                triggerTime = this._addAnticipation(tl, triggerTime);
+            }
 
-            const start = mode === "out" ? homeY: outY;
-            const end = mode === "out" ? outY: homeY;
-            const ease = mode === "out" ? "power2.in" : "power2.out";
+            for (const symbolIndex of cascadeGroup) {
+                const targetSymbol = symbols[symbolIndex];
 
-            tl.fromTo(targetSymbol, { y: start }, { y: end, ease, duration: dropTime, immediateRender: false }, triggerTime);
-            triggerTime += dropStagger;
+                const homeY = targetSymbol.homePos.y;
+                const outY = mode === "out" ? (homeY + yOut) : (homeY + yIn);
+
+                const start = mode === "out" ? homeY : outY;
+                const end = mode === "out" ? outY : homeY;
+                const ease = mode === "out" ? "power2.in" : "power2.out";
+
+                tl.fromTo(targetSymbol, { y: start }, { y: end, ease, duration: dropTime, immediateRender: false }, triggerTime);
+                triggerTime += dropStagger;
+            }
+
+            groupIndex++;
         }
+
+
         triggerTime += dropTime;
 
         return triggerTime;
     }
 
-    private  _addSkinChange(tl: gsap.core.Timeline, symbols: Array<CascadeSymbol>, landing: Array<number>, triggerTime: number ): number {
+    private _addSkinChange(tl: gsap.core.Timeline, symbols: Array<CascadeSymbol>, landing: Array<number>, triggerTime: number): number {
         for (let i = symbols.length - 1; i >= 0; i--) {
             const targetSymbol = this._symbols[i];
             const symbolID = landing[i];
             const symbolSkin = this._config.symbolMap[symbolID];
             tl.add(() => { targetSymbol.texture = getTexture(symbolSkin); }, triggerTime);
         }
-        return triggerTime;        
+        return triggerTime;
+    }
+
+    private _addAnticipation(tl: gsap.core.Timeline, triggerTime: number): number {
+        triggerTime = this._anticipation.addAnticipation( tl, triggerTime );
+        return triggerTime;
     }
 }

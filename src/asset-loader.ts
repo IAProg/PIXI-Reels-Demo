@@ -20,7 +20,8 @@ const textureManifest = [
     { name: "reelsBacker", url: "reelsBacker.png"},
     { name: "bigWin", url: "bigWin.jpg"},
     { name: "bigWinFlash", url: "bigWinFlash.jpg"},
-    { name: "button", url: "button.png"}
+    { name: "button", url: "button.png"},
+    { name: "anticipation", url: "anticipation.png"}
 ] as Array<IAssetDefinition>
 
 /**

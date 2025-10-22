@@ -6,7 +6,7 @@ import { ICascadeConfig, IProgressBarConfig, IRoundCounterConfig, ISizeRef } fro
  * config for components of the application - for modular components strict typing would be enforced here 
  */
 export const appConfig = {
-    canvas:{
+    canvas: {
         width: 640,
         height: 640,
         antialias: true,
@@ -15,22 +15,30 @@ export const appConfig = {
         resizeTo: window,
         backgroundColor: 0xffffff
     } as Partial<IApplicationOptions>,
-    mainScene:{
+    mainScene: {
         size: { width: 1920, height: 1080 } as ISizeRef,
         cascadeConfig: {
             colCount: 5,
             rowCount: 3,
             symbolWidth: 275,
             symbolHeight: 275,
-            dropTime: 0.33, 
+            dropTime: 0.33,
             dropStagger: 0.025,
-            symbolMap:{
+            symbolMap: {
                 1: "blank",
                 2: "cash",
                 3: "collector"
             },
-            yOut: +825, 
-            yIn: -825
+            yOut: +825,
+            yIn: -825,
+            cascadeGroups: [
+                [2, 1, 0],
+                [5, 4, 3],
+                [8, 7, 6],
+                [11, 10, 9],
+                [14, 13, 12]
+            ],
+            anticipationTriggerIndex: 4
         } as ICascadeConfig,
         progressBarConfig: {
             width: 1280,
@@ -51,6 +59,10 @@ export const appConfig = {
     bigWin: {
         textureFlashOn: "bigWin",
         textureFlashOff: "bigWinFlash",
+        flashDuration: 0.2,
+        flashCount: 5
+    },
+    anticipation: {
         flashDuration: 0.2,
         flashCount: 5
     }

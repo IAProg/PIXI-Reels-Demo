@@ -81,7 +81,7 @@ export function getDummyBonus(): Array<IBonusData> {
             win: 0,
             remainingSpins: 0,
             showBigWin: Math.random() > 0.6,
-            showAnticipation: false,
+            showAnticipation: Math.random() > 0.6,
             landing: createRepeatingRange(15, 1, 3)
         }
     } );

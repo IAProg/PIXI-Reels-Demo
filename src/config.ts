@@ -1,5 +1,5 @@
 import { IApplicationOptions, ITextStyle } from "pixi.js";
-import { ICascadeConfig, ISizeRef } from "./types";
+import { ICascadeConfig, IProgressBarConfig, ISizeRef } from "./types";
 
 
 /**
@@ -31,7 +31,13 @@ export const appConfig = {
             },
             yOut: +825, 
             yIn: -825
-        } as ICascadeConfig
+        } as ICascadeConfig,
+        progressBarConfig: {
+            width: 1280,
+            height: 100,
+            bgColour: 0xcccccc,
+            barColour: 0x33cc33
+        } as IProgressBarConfig
     },
     controls: {
         size: { width: 250, height: 1080 } as ISizeRef

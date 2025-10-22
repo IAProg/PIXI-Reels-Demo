@@ -37,3 +37,10 @@ export interface IBonusData {
     showBigWin: boolean,
     showAnticipation: boolean
 }
+
+export interface IProgressBarConfig {
+    width: number;
+    height: number;
+    bgColour: number
+    barColour: number
+}

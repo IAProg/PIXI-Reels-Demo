@@ -6,6 +6,7 @@ import { CascadeReel } from "./components/cascade/cascade";
 import { BigWin } from "./components/bigWin";
 import gsap from "gsap";
 import { DUMMY_BONUS } from "./dummyBonus";
+import { ProgressBar } from "./components/progressBar";
 
 
 
@@ -15,6 +16,7 @@ import { DUMMY_BONUS } from "./dummyBonus";
 export class MainScene extends Container {
     private size: ISizeRef;
 
+    private _progressBar: ProgressBar;
     private _cascadeReel: CascadeReel;
     private _bigWin: BigWin;
     private _roundCounter: Text;
@@ -26,7 +28,7 @@ export class MainScene extends Container {
 
     constructor() {
         super();
-        const { size, cascadeConfig } = appConfig.mainScene;
+        const { size, cascadeConfig, progressBarConfig } = appConfig.mainScene;
         this.size = size;
 
         this._roundCounter = new Text("Idle: Press Play To Start", { fontSize: 75, align: "center" });
@@ -36,7 +38,10 @@ export class MainScene extends Container {
         this._cascadeReel = new CascadeReel(cascadeConfig);
         this._bigWin = new BigWin();
 
-        this.addChild(this._cascadeReel, this._bigWin, this._roundCounter );
+        this._progressBar = new ProgressBar( progressBarConfig );
+        this._progressBar.y = -475
+
+        this.addChild(this._cascadeReel, this._bigWin, this._progressBar, this._roundCounter );
 
         this._tl = gsap.timeline();
     }
@@ -54,7 +59,9 @@ export class MainScene extends Container {
                 if ( roundData.showBigWin ){
                     triggerTime = this._bigWin.addBigWin( this._tl, triggerTime );
                 }
-            });            
+            });      
+
+            triggerTime = this._progressBar.addProgressBar( this._tl, triggerTime );
         });
     }
 

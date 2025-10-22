@@ -12,7 +12,6 @@ export class LabelButton extends Container {
         this._bg.on("pointerdown", () => onClick(0.1));
         this._bg.anchor.set(1, 0.5);
 
-
         this._label = new Text(labelString, { fontSize: 50, fontWeight: "bold" });
         this._label.anchor.set(0.5);
 

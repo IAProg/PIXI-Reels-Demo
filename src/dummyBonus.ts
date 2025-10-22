@@ -76,7 +76,7 @@ export const DUMMY_BONUS = [
 ] as Array<IBonusData>
 
 export function getDummyBonus(): Array<IBonusData> {
-    return new Array(randomInt(10, 20)).fill(0).map(() => {
+    return new Array(randomInt(20, 40)).fill(0).map(() => {
         return {
             win: 0,
             remainingSpins: 0,

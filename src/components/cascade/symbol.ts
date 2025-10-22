@@ -10,13 +10,9 @@ export class CascadeSymbol extends Sprite {
         this._symbolIndex = symbolIndex;
         this._homePos = homePos;
 
-        const l = new Text(symbolIndex)
-        
         this.anchor.set(0.5);
         this.setTexture( textureName )
         this.position.copyFrom(homePos);
-
-        this.addChild(l)
     }
 
     get homePos(): Point {
